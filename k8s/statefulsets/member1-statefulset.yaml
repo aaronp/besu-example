@@ -131,13 +131,13 @@ spec:
                     {
                       "app":"ThirdParty",
                       "enabled": true,
-                      "serverAddress": "http://127.0.0.1:9080",
+                      "serverAddress": "http://0.0.0.0:9080",
                       "communicationType" : "REST"
                     },
                     {
                       "app":"Q2T",
                       "enabled": true,
-                      "serverAddress": "http://127.0.0.1:9101",
+                      "serverAddress": "http://0.0.0.0:9101",
                       "sslConfig": {
                         "tls": "OFF"
                       },
@@ -146,7 +146,7 @@ spec:
                     {
                       "app":"P2P",
                       "enabled": true,
-                      "serverAddress": "http://127.0.0.1:9000",
+                      "serverAddress": "http://0.0.0.0:9000",
                       "sslConfig": {
                         "tls": "OFF"
                       },

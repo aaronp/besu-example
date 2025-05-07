@@ -35,7 +35,7 @@ if lsof -i :8545 > /dev/null; then
 else
     # Start port forwarding in the background
     echo "Setting up port forwarding to ${PODS[0]}..."
-    kubectl port-forward -n quorum pod/${PODS[0]} 8545:8545 --container=${PODS[0]}-quorum &
+    kubectl port-forward -n quorum pod/${PODS[0]} 8545:8545 &
     PF_PID=$!
 
     # Wait for port forwarding to be ready
