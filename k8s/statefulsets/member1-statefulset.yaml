@@ -131,22 +131,22 @@ spec:
                     {
                       "app":"ThirdParty",
                       "enabled": true,
-                      "serverAddress": "http://quorum-member1.quorum.svc.cluster.local:9080",
+                      "serverAddress": "http://127.0.0.1:9080",
                       "communicationType" : "REST"
                     },
                     {
                       "app":"Q2T",
                       "enabled": true,
-                      "serverAddress": "http://quorum-member1.quorum.svc.cluster.local:9101",
+                      "serverAddress": "http://127.0.0.1:9101",
                       "sslConfig": {
                         "tls": "OFF"
                       },
                       "communicationType" : "REST"    
                     },
-                                        {
+                    {
                       "app":"P2P",
                       "enabled": true,
-                      "serverAddress": "http://quorum-member1.quorum.svc.cluster.local:9000",
+                      "serverAddress": "http://127.0.0.1:9000",
                       "sslConfig": {
                         "tls": "OFF"
                       },

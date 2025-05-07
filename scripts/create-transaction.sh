@@ -84,6 +84,7 @@ fi
 
 # Run the Python script with the pod name
 echo "Running transaction script..."
+source venv/bin/activate
 python3 scripts/create-transaction.py "$BESU_POD"
 
 # Clean up port forwarding if we started it
