@@ -1,14 +1,17 @@
 import express from 'express';
 import { exec } from 'child_process';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
+const SCRIPT_DIR = process.env.SCRIPT_DIR || '/mnt/scripts';
 
 app.use(express.static('public'));
 app.use(express.json());
 
 app.post('/backup', (req, res) => {
-  exec('/mnt/scripts/backup.sh', (error, stdout, stderr) => {
+  exec(`${SCRIPT_DIR}/backup.sh`, (error, stdout, stderr) => {
     res.json({
       stdout,
       stderr,

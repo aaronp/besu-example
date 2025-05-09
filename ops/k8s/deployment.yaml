@@ -28,7 +28,7 @@ spec:
       volumes:
         - name: scripts
           hostPath:
-            path: /Users/aaron/dev/sandbox/besu-example/besu-scripts
+            path: /Users/aaron/dev/sandbox/besu-example/ops/besu-scripts
             type: Directory
 ---
 apiVersion: v1
