@@ -8,7 +8,7 @@ app.use(express.static('public'));
 app.use(express.json());
 
 app.post('/backup', (req, res) => {
-  exec('/mnt/scripts/backup-besu.sh', (error, stdout, stderr) => {
+  exec('/mnt/scripts/backup.sh', (error, stdout, stderr) => {
     res.json({
       stdout,
       stderr,

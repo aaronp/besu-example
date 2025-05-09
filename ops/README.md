@@ -18,7 +18,7 @@ npm start
 
 ```
 docker build -t ops-app .
-docker run -p 3000:3000 -v /Users/aaron/dev/sandbox/besu-example/besu-scripts:/mnt/scripts ops-app
+docker run -p 3000:3000 -v ${PWD}/besu-scripts:/mnt/scripts ops-app
 ```
 
 ## Kubernetes
