@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ops-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ops-app
+  template:
+    metadata:
+      labels:
+        app: ops-app
+    spec:
+      containers:
+        - name: ops-app
+          image: node:18
+          workingDir: /app
+          command: ["npm", "start"]
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: scripts
+              mountPath: /mnt/scripts
+          env:
+            - name: NODE_ENV
+              value: production
+      volumes:
+        - name: scripts
+          hostPath:
+            path: /Users/aaron/dev/sandbox/besu-example/besu-scripts
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ops-app-service
+spec:
+  selector:
+    app: ops-app
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP

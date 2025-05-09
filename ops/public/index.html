@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backup Besu Node</title>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+    #output { white-space: pre-wrap; background: #f4f4f4; padding: 1em; border-radius: 5px; margin-top: 1em; }
+    button { padding: 0.5em 1em; font-size: 1em; }
+  </style>
+</head>
+<body>
+  <h1>Backup Besu Node</h1>
+  <button id="backupBtn">Backup Besu Node</button>
+  <div id="output"></div>
+  <script>
+    document.getElementById('backupBtn').onclick = async function() {
+      const outputDiv = document.getElementById('output');
+      outputDiv.textContent = 'Running backup...';
+      const res = await fetch('/backup', { method: 'POST' });
+      const data = await res.json();
+      outputDiv.textContent =
+        (data.stdout || '') + (data.stderr ? '\n[stderr]\n' + data.stderr : '') +
+        (data.error ? '\n[error]\n' + data.error : '');
+    };
+  </script>
+</body>
+</html> 
