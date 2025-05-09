@@ -13,6 +13,7 @@ echo "📦 Loading image into KIND cluster"
 kind load docker-image $IMAGE_NAME --name local-cluster
 
 echo "🚀 Applying Kubernetes manifests"
+kubectl create namespace ops || echo 'ops namespace exists'
 kubectl apply -f $DEPLOYMENT_FILE
 
 echo "🔁 Restarting deployment to pick up new image"

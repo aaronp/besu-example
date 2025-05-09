@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ops-app
-          image: node:18
+          image: ops-app:latest
           workingDir: /app
           command: ["npm", "start"]
           ports:

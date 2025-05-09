@@ -20,6 +20,20 @@ app.post('/backup', (req, res) => {
   });
 });
 
+app.post('/manual', (req, res) => {
+  const { script } = req.body;
+  if (typeof script !== 'string' || !script.trim()) {
+    return res.json({ error: 'No script provided.' });
+  }
+  exec(script, (error, stdout, stderr) => {
+    res.json({
+      stdout,
+      stderr,
+      error: error ? error.message : null
+    });
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 }); 
