@@ -1,8 +1,12 @@
 dev:
 	npm run dev
-
+run:
+	docker run -it --rm -p 3000:3000 -v $(PWD)/scripts:/mnt/scripts kindservices/ops-app:latest
 deploy:
-	./deployLocal.sh
+	./scripts/deployLocal.sh
+
+publish:
+	./scripts/publish.sh
 
 createCluster:
 	kind create cluster --name local-cluster --config kind-config.yaml

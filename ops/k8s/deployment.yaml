@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ops-app
-          image: ops-app:latest
+          image: kindservices/ops-app:latest
           workingDir: /app
           command: ["npm", "start"]
           ports:
