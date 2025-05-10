@@ -1,6 +1,7 @@
 import express from 'express';
 import { exec } from 'child_process';
 import dotenv from 'dotenv';
+import fetch from 'node-fetch';
 dotenv.config();
 
 const app = express();
@@ -32,6 +33,38 @@ app.post('/manual', (req, res) => {
       error: error ? error.message : null
     });
   });
+});
+
+app.post('/send-transaction', async (req, res) => {
+  const { rpcUrl, from, to, value } = req.body;
+  if (!rpcUrl || !from || !to || typeof value === 'undefined') {
+    return res.json({ error: 'Missing required fields.' });
+  }
+  try {
+    const tx = {
+      from,
+      to,
+      value: '0x' + BigInt(value).toString(16)
+      // gas: '0x5208' // 21000 gas
+    };
+    const response = await fetch(rpcUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        method: 'eth_sendTransaction',
+        params: [tx],
+        id: 1
+      })
+    });
+    const data = await response.json();
+    if (data.error) {
+      return res.json({ error: data.error.message });
+    }
+    res.json({ result: data.result });
+  } catch (err) {
+    res.json({ error: err.message });
+  }
 });
 
 app.listen(PORT, () => {
