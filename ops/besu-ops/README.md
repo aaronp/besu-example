@@ -1,54 +1,78 @@
-# React + TypeScript + Vite
+# Besu Ops Fullstack App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a fullstack TypeScript monorepo for Besu node operations, featuring:
+- React frontend (Vite, TypeScript)
+- Express backend (TypeScript, serves API and UI)
+- Single Docker image for production
 
-Currently, two official plugins are available:
+## Local Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Frontend (React)
+```
+npm run dev
+```
+Runs the React app with Vite on port 5173 (default).
 
-## Expanding the ESLint configuration
+### Backend (Express, dev mode)
+```
+npm run dev:server
+```
+Runs the Express backend (TypeScript, not compiled) on port 3000.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Full Production Build
+```
+npm run build:all
+```
+- Builds the backend to `dist-server/`
+- Builds the frontend to `dist/`
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Start Production Server
+```
+npm run start:server
+```
+Serves both API and UI from a single process on port 3000.
+
+## Docker
+
+Build and run the fullstack app in a single container:
+```
+docker build -t besu-ops .
+docker run -p 3000:3000 besu-ops
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Kubernetes
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+You can deploy the built Docker image to your Kubernetes cluster. Example deployment:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: besu-ops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: besu-ops
+  template:
+    metadata:
+      labels:
+        app: besu-ops
+    spec:
+      containers:
+        - name: besu-ops
+          image: <your-docker-repo>/besu-ops:latest
+          ports:
+            - containerPort: 3000
 ```
+
+## Project Structure
+
+- `src/` - React frontend
+- `server/` - Express backend (TypeScript)
+- `dist/` - React build output
+- `dist-server/` - Backend build output
+- `besu-scripts/` - Custom scripts (e.g., backup.sh)
+
+---
+For questions or improvements, open an issue or PR!
