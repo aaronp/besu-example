@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Please be sure to use the latest svelte5 and best practices. Use svelte-ux and tailwind styling wherever possible

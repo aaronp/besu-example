@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: besu-ops
+  namespace: besu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: besu-ops
+  template:
+    metadata:
+      labels:
+        app: besu-ops
+    spec:
+      containers:
+        - name: besu-ops
+          image: kindservices/besu-ops:0.0.7
+          ports:
+            - containerPort: 3000
