@@ -18,3 +18,34 @@ spec:
           image: kindservices/besu-ops:0.0.9
           ports:
             - containerPort: 3000
+          volumeMounts:
+            - name: validator1-data
+              mountPath: /data/validator1
+              readOnly: true
+            - name: validator2-data
+              mountPath: /data/validator2
+              readOnly: true
+            - name: validator3-data
+              mountPath: /data/validator3
+              readOnly: true
+            - name: validator4-data
+              mountPath: /data/validator4
+              readOnly: true
+            - name: backups
+              mountPath: /backups
+      volumes:
+        - name: validator1-data
+          persistentVolumeClaim:
+            claimName: validator1-pvc
+        - name: validator2-data
+          persistentVolumeClaim:
+            claimName: validator2-pvc
+        - name: validator3-data
+          persistentVolumeClaim:
+            claimName: validator3-pvc
+        - name: validator4-data
+          persistentVolumeClaim:
+            claimName: validator4-pvc
+        - name: backups
+          persistentVolumeClaim:
+            claimName: besu-backups-pvc
