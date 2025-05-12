@@ -2,7 +2,7 @@
 dev:
 	npm run dev
 
-TAG ?= 0.0.9
+TAG ?= 0.0.10
 IMAGE ?= kindservices/besu-ops
 
 build:
