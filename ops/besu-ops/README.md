@@ -1,78 +1,31 @@
-# Besu Ops Fullstack App
+# Besu Ops
 
-This project is a fullstack TypeScript monorepo for Besu node operations, featuring:
-- React frontend (Vite, TypeScript)
-- Express backend (TypeScript, serves API and UI)
-- Single Docker image for production
+This is a simple operations application for working with a Besu cluster on kubernetes.
 
-## Local Development
+It allows operations and testers to:
 
-### Frontend (React)
-```
-npm run dev
-```
-Runs the React app with Vite on port 5173 (default).
+# Configure
 
-### Backend (Express, dev mode)
-```
-npm run dev:server
-```
-Runs the Express backend (TypeScript, not compiled) on port 3000.
+A page for storing configuration data and app state
 
-### Full Production Build
-```
-npm run build:all
-```
-- Builds the backend to `dist-server/`
-- Builds the frontend to `dist/`
+# Create key pairs
 
-### Start Production Server
-```
-npm run start:server
-```
-Serves both API and UI from a single process on port 3000.
+There is an 'identities' page for creating public/private key pairs used for creating transactions on the Besu blockchain
 
-## Docker
+# Submit Test Transactions
 
-Build and run the fullstack app in a single container:
-```
-docker build -t besu-ops .
-docker run -p 3000:3000 besu-ops
-```
+There is a 'submit' page for submitted test transactions
 
-## Kubernetes
 
-You can deploy the built Docker image to your Kubernetes cluster. Example deployment:
+# Block Explorer
 
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: besu-ops
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: besu-ops
-  template:
-    metadata:
-      labels:
-        app: besu-ops
-    spec:
-      containers:
-        - name: besu-ops
-          image: <your-docker-repo>/besu-ops:latest
-          ports:
-            - containerPort: 3000
-```
+There is a simple 'explorer' page for showing the state of the cluster (blocks and transactions per node)
 
-## Project Structure
+# Backup 
 
-- `src/` - React frontend
-- `server/` - Express backend (TypeScript)
-- `dist/` - React build output
-- `dist-server/` - Backend build output
-- `besu-scripts/` - Custom scripts (e.g., backup.sh)
+There is a 'backup' page for creating node backups
 
----
-For questions or improvements, open an issue or PR!
+# Restore
+
+There is a 'restore' page for restoring node backups
+

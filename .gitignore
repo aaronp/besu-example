@@ -2,3 +2,4 @@ backups
 .DS_Store
 node_modules
 code
+dist-server

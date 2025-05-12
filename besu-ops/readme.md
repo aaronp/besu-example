@@ -1,31 +1,38 @@
-# Besu Ops
+# sv
 
-This is a simple operations application for working with a Besu cluster on kubernetes.
+Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
-It allows operations and testers to:
+## Creating a project
 
-# Configure
+If you're seeing this, you've probably already done this step. Congrats!
 
-A page for storing configuration data and app state
+```bash
+# create a new project in the current directory
+npx sv create
 
-# Create key pairs
+# create a new project in my-app
+npx sv create my-app
+```
 
-There is an 'identities' page for creating public/private key pairs used for creating transactions on the Besu blockchain
+## Developing
 
-# Submit Test Transactions
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-There is a 'submit' page for submitted test transactions
+```bash
+npm run dev
 
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
 
-# Block Explorer
+## Building
 
-There is a simple 'explorer' page for showing the state of the cluster (blocks and transactions per node)
+To create a production version of your app:
 
-# Backup 
+```bash
+npm run build
+```
 
-There is a 'backup' page for creating node backups
+You can preview the production build with `npm run preview`.
 
-# Restore
-
-There is a 'restore' page for restoring node backups
-
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
