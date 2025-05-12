@@ -1,10 +1,11 @@
 import { json } from '@sveltejs/kit';
 import { execSync } from 'child_process';
 
-export async function GET() {
+export async function GET({ url }: { url: URL }) {
     try {
+        const namespace = url.searchParams.get('namespace') || 'besu';
         console.log('Getting nodes');
-        const output = execSync('kubectl get svc -n besu -o json').toString();
+        const output = execSync(`kubectl get svc -n ${namespace} -o json`).toString();
         const data = JSON.parse(output);
         const nodes = data.items.map((svc: any) => ({
             name: svc.metadata.name,
