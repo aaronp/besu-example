@@ -44,7 +44,7 @@
   let backups: string[] = [];
 
   async function loadBackups() {
-    const res = await fetch(`/api/backup/${memberHost}`);
+    const res = await fetch(`/api/backup/${nodeName}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     backups = data;
@@ -131,7 +131,7 @@
   async function onBackup() {
     backingUp = true;
     try {
-      const res = await fetch(`/api/backup/${memberHost}`, {
+      const res = await fetch(`/api/backup/${nodeName}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -142,7 +142,7 @@
       console.log('backup result', data);
       loadBackups();
     } catch (e) {
-      console.error('Error backing up', e);
+      error = `Error backing up: ${e}`
     } finally {
       backingUp = false;
     }

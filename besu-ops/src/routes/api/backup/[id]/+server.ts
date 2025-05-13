@@ -7,6 +7,10 @@ const DATA_DIR = process.env.DATA_DIR;
 const BACKUP_DIR = process.env.BACKUP_DIR;
 
 export async function POST({ params }) {
+    console.log('starting back up', {
+        dataDir: DATA_DIR,
+        backupDir: BACKUP_DIR,
+    })
     if (!DATA_DIR || !BACKUP_DIR) {
         return json({ error: 'DATA_DIR or BACKUP_DIR environment variable not set' }, { status: 500 });
     }

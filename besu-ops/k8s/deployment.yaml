@@ -25,16 +25,16 @@ spec:
               value: /backups
           volumeMounts:
             - name: validator1-data
-              mountPath: /data/validator1
+              mountPath: /data/besu-validator1
               readOnly: true
             - name: validator2-data
-              mountPath: /data/validator2
+              mountPath: /data/besu-validator2
               readOnly: true
             - name: validator3-data
-              mountPath: /data/validator3
+              mountPath: /data/besu-validator3
               readOnly: true
             - name: validator4-data
-              mountPath: /data/validator4
+              mountPath: /data/besu-validator4
               readOnly: true
             - name: backups
               mountPath: /backups

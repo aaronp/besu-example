@@ -2,11 +2,11 @@
 	import { Button } from "svelte-ux";
 
   let to = '';
-  let value = '';
-  let privateKey = '';
+  let value = '1';
+  let privateKey = 'ae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f';
   let submitting = false;
   let result = '';
-  let rpcUrl = 'http://localhost:8545';
+  let rpcUrl = 'http://besu-validator1.besu.svc.cluster.local:8545';
 
   // Load lastTransaction from localStorage if available
   if (typeof window !== 'undefined') {
