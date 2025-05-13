@@ -50,9 +50,14 @@
     {#each nodes as node}
       <li>
         {#if node.name && node.name.toLowerCase().includes('validator')}
-          <a href={`/node/${node.ip}`} class="text-blue-600 hover:underline">{node.name}</a>
-        {:else}
-          {node.name}
+          <div class="bg-white rounded shadow p-4 border border-gray-200 mt-4">
+            <h2 class="text-2xl font-bold mb-4">{node.name}</h2>
+            <div class="mt-2">
+              <a href={`/node/${node.ip}`} class="text-blue-600 hover:underline">Block Explorer</a> | 
+              <a href={`/backup/${node.name}`} class="text-blue-600 hover:underline">Backup Node</a> | 
+              <a href={`/scale/${node.name}`} class="text-blue-600 hover:underline">Scale</a>
+            </div>
+          </div>
         {/if}
       </li>
     {/each}

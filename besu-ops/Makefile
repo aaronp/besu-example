@@ -1,6 +1,6 @@
 .PHONY: dev build publish deploy
 dev:
-	npm run dev
+	DATA_DIR=./d8a BACKUP_DIR=./backups npm run dev
 
 TAG ?= 0.0.12
 IMAGE ?= kindservices/besu-ops

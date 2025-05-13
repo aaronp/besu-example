@@ -10,7 +10,7 @@
     <a href="/" class="text-white no-underline hover:underline text-lg font-bold">Besu Ops</a>
   </AppBar>
 
-  <main class="pt-16 m-2 p-2">
+  <main class="m-2 p-2">
     <slot />
   </main>
 </div>

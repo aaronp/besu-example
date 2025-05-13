@@ -38,21 +38,9 @@
     }
   }
 
-  
-  let backingUp= false
-  let scalingNode = false
-  let backups: string[] = [];
 
-  async function loadBackups() {
-    const res = await fetch(`/api/backup/${nodeName}`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    backups = data;
-  }
 
   loadNodes();
-
-  loadBackups();
 
   function getSavedBlockResults() {
     if (typeof window !== 'undefined') {
@@ -126,27 +114,6 @@
     }
   }
 
-  async function onScaleNode() {
-  }
-  async function onBackup() {
-    backingUp = true;
-    try {
-      const res = await fetch(`/api/backup/${nodeName}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      console.log('backup result', data);
-      loadBackups();
-    } catch (e) {
-      error = `Error backing up: ${e}`
-    } finally {
-      backingUp = false;
-    }
-  }
 
   async function clearCache() {
     if (typeof window !== 'undefined') {
@@ -173,23 +140,6 @@
   {#if error}
   <div class="text-red-500">{error}</div>
   {/if}
-  {#if backups.length > 0}
-    <div>
-      <h2 class="text-2xl font-bold mb-4">Backups</h2>
-      <ul>
-        {#each backups as backup}
-          <li>{backup}</li>
-        {/each}
-      </ul>
-    </div>
-  {/if}
-  <div>
-    <Button class="py-4 my-8 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
-     on:click={onBackup} disabled={scalingNode} >Scale Down</Button>
-
-    <Button class="py-4 my-8 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
-     on:click={onBackup} disabled={backingUp} >Backup Node</Button>
-  </div>
 </div>
 <h1 class="text-2xl font-bold mb-4">Block Explorer</h1>
 <Collapse name="Settings" initiallyOpen={false}>

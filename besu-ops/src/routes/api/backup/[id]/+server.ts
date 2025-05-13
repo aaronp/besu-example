@@ -7,12 +7,16 @@ const DATA_DIR = process.env.DATA_DIR;
 const BACKUP_DIR = process.env.BACKUP_DIR;
 
 export async function POST({ params }) {
+
     console.log('starting back up', {
         dataDir: DATA_DIR,
         backupDir: BACKUP_DIR,
     })
     if (!DATA_DIR || !BACKUP_DIR) {
         return json({ error: 'DATA_DIR or BACKUP_DIR environment variable not set' }, { status: 500 });
+    }
+    if (DATA_DIR === '' || BACKUP_DIR === '') {
+        return json({ error: 'DATA_DIR or BACKUP_DIR environment variable is empty' }, { status: 500 });
     }
     const id = params.id;
     const dataDir = path.join(DATA_DIR, id);
@@ -22,8 +26,15 @@ export async function POST({ params }) {
     const tarPath = path.join(backupsDir, tarName);
 
     if (!fs.existsSync(dataDir)) {
+        console.log(`${dataDir} not found`);
+        // fs.mkdirSync(dataDir, { recursive: true });
         return json({ error: 'Validator data directory not found' }, { status: 404 });
     }
+    const dataDirContents = fs.readdirSync(dataDir);
+    if (dataDirContents.length === 0) {
+        return json({ error: 'Validator data directory is empty' }, { status: 404 });
+    }
+
     if (!fs.existsSync(backupsDir)) {
         fs.mkdirSync(backupsDir, { recursive: true });
     }
@@ -43,6 +54,9 @@ export async function POST({ params }) {
 export async function GET({ params }) {
     if (!BACKUP_DIR) {
         return json({ error: 'BACKUP_DIR environment variable not set' }, { status: 500 });
+    }
+    if (BACKUP_DIR === '') {
+        return json({ error: 'BACKUP_DIR environment variable is empty' }, { status: 500 });
     }
     const id = params.id;
     const backupsDir = path.join(BACKUP_DIR, id);
