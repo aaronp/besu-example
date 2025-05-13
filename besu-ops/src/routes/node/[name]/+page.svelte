@@ -1,14 +1,57 @@
 <script lang="ts">
-  import { Button, TextField } from 'svelte-ux';
+  import { Button, TextField, Collapse } from 'svelte-ux';
 
   export let data: { name: string };
   let memberHost: string = data.name;
+  let nodeName: string = data.name;
   let result: string = '';
-  let loading = false;
+  let loadingBlocks = false;
   let batchSize: number = 3000;
   let offset: number = 0;
   let until: number = 0;
   let parsedResult: any = null;
+
+
+  let nodes: { name: string; ip: string; ports: number[] }[] = [];
+  let error: string | null = null;
+  let namespace = 'besu';
+
+  async function loadNodes() {
+    if (typeof window !== 'undefined') {
+        namespace = localStorage.getItem('besuNamespace') || 'besu';
+    }
+
+    error = null;
+    try {
+      const res = await fetch(`/api/network?namespace=${encodeURIComponent(namespace)}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      nodes = data.nodes || [];
+
+      const node = nodes.find(node => node.ip === memberHost);
+      if (node) {
+        nodeName = node.name;
+      }
+    } catch (e) {
+      error = e instanceof Error ? e.message : 'Unknown error';
+      nodes = [];
+    }
+  }
+
+  
+  let backingUp= false
+  let backups: string[] = [];
+
+  async function loadBackups() {
+    const res = await fetch(`/api/backup/${memberHost}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    backups = data;
+  }
+
+  loadNodes();
+
+  loadBackups();
 
   function getSavedBlockResults() {
     if (typeof window !== 'undefined') {
@@ -39,7 +82,7 @@
       }
     }
 
-    loading = true;
+    loadingBlocks = true;
     result = '';
     try {
       const res = await fetch(`/api/chain?host=${encodeURIComponent(memberHost)}&batchSize=${batchSize}&offset=${offset}&until=${until}`);
@@ -78,7 +121,27 @@
       result = 'Error: ' + (e && typeof e === 'object' && 'message' in e ? e.message : String(e));
       parsedResult = null;
     } finally {
-      loading = false;
+      loadingBlocks = false;
+    }
+  }
+
+  async function onBackup() {
+    backingUp = true;
+    try {
+      const res = await fetch(`/api/backup/${memberHost}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      console.log('backup result', data);
+      loadBackups();
+    } catch (e) {
+      console.error('Error backing up', e);
+    } finally {
+      backingUp = false;
     }
   }
 
@@ -100,20 +163,46 @@
   }
 </script>
 
-<h1>Node: {data.name}</h1>
-<label>
-  Member Host:
-  <input bind:value={memberHost} />
-</label>
-<div style="display: flex; gap: 1em; margin: 1em 0;">
-  <TextField label="Batch Size" type="integer" bind:value={batchSize} min={1} />
-  <TextField label="Offset" type="integer" bind:value={offset} min={0} />
-  <TextField label="Until" type="integer" bind:value={until} min={0} />
+<div class="px-4">
+<div>
+  <h1 class="text-4xl font-bold mb-4">{nodeName}</h1>
+
+  {#if error}
+  <div class="text-red-500">{error}</div>
+  {/if}
+  {#if backups.length > 0}
+    <div>
+      <h2 class="text-2xl font-bold mb-4">Backups</h2>
+      <ul>
+        {#each backups as backup}
+          <li>{backup}</li>
+        {/each}
+      </ul>
+    </div>
+  {/if}
+  <div>
+    <Button class="py-4 my-8 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
+     on:click={onBackup} disabled={backingUp} >Backup</Button>
+  </div>
 </div>
-<Button class="bg-blue-600 text-white rounded px-6 py-3 font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"  on:click={refresh} disabled={loading} style="margin-left:1em;">{loading ? 'Refreshing...' : 'Refresh'}</Button>
-<Button class="bg-gray-400 text-white rounded px-6 py-3 font-semibold hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300 disabled:opacity-50" on:click={clearCache} disabled={loading} style="margin-left:0.5em;">Clear Cache</Button>
+<h1 class="text-2xl font-bold mb-4">Block Explorer</h1>
+<Collapse name="Settings" initiallyOpen={false}>
+  <label>
+    Member Host:
+    <input class="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500" bind:value={memberHost} />
+  </label>
+  <div style="display: flex; gap: 1em; margin: 1em 0;">
+    <TextField label="Batch Size" type="integer" bind:value={batchSize} min={1} />
+    <TextField label="Offset" type="integer" bind:value={offset} min={0} />
+    <TextField label="Until" type="integer" bind:value={until} min={0} />
+  </div>
 
+  <Button class="bg-gray-400 text-white rounded py-3 font-semibold hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-300 disabled:opacity-50" on:click={clearCache} disabled={loadingBlocks} >Clear Cache</Button>
+</Collapse>
 
+<Button class="py-4 my-4 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50" on:click={refresh} disabled={loadingBlocks} >{loadingBlocks ? 'Refreshing...' : 'Refresh'}</Button>
+
+</div>
 
 
 {#if result && parsedResult?.blocks}

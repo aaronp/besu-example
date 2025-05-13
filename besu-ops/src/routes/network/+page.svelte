@@ -5,6 +5,10 @@
   let error: string | null = null;
   let namespace = 'besu';
 
+  $: if (typeof window !== 'undefined') {
+    localStorage.setItem('besuNamespace', namespace);
+  }
+
   async function loadNodes() {
     loading = true;
     error = null;
