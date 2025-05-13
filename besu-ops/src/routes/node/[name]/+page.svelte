@@ -40,6 +40,7 @@
 
   
   let backingUp= false
+  let scalingNode = false
   let backups: string[] = [];
 
   async function loadBackups() {
@@ -125,6 +126,8 @@
     }
   }
 
+  async function onScaleNode() {
+  }
   async function onBackup() {
     backingUp = true;
     try {
@@ -182,7 +185,10 @@
   {/if}
   <div>
     <Button class="py-4 my-8 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
-     on:click={onBackup} disabled={backingUp} >Backup</Button>
+     on:click={onBackup} disabled={scalingNode} >Scale Down</Button>
+
+    <Button class="py-4 my-8 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
+     on:click={onBackup} disabled={backingUp} >Backup Node</Button>
   </div>
 </div>
 <h1 class="text-2xl font-bold mb-4">Block Explorer</h1>
