@@ -18,6 +18,11 @@ spec:
           image: kindservices/besu-ops:0.0.9
           ports:
             - containerPort: 3000
+          env:
+            - name: DATA_DIR
+              value: /data
+            - name: BACKUP_DIR
+              value: /backups
           volumeMounts:
             - name: validator1-data
               mountPath: /data/validator1
