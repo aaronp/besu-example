@@ -10,8 +10,8 @@
   let scaling = false;
 
   // Get the node name from the route param
-  let name = '';
-  $: name = get(page).params.name;
+  let statefulset = '';
+  $: statefulset = get(page).params.statefulset;
 
   let namespace = 'besu';
 
@@ -22,7 +22,11 @@
     }
     error = '';
     try {
-      const res = await fetch('/api/status');
+      const res = await fetch('/api/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ statefulset, namespace })
+      });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       status = data.status;
@@ -41,9 +45,10 @@
       const res = await fetch('/api/scale', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, podName: name, namespace, replicas: action === 'up' ? 1 : 0 })
+        body: JSON.stringify({ statefulset, namespace, replicas: action === 'up' ? 1 : 0 })
       });
       const data = await res.json();
+      console.log('scale result', data);
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
       status = data.status;
       details = data.message;
@@ -58,7 +63,7 @@
 </script>
 
 <div class="px-4 max-w-xl mx-auto">
-  <h1 class="text-3xl font-bold mb-4">Scale Node: <span class="text-blue-700">{name}</span></h1>
+  <h1 class="text-3xl font-bold mb-4">Scale Stateful Set: <span class="text-blue-700">{statefulset}</span></h1>
 
   {#if error}
     <div class="text-red-500 mb-2">{error}</div>

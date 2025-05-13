@@ -1,6 +1,8 @@
 <script lang="ts">
   import { TextField } from 'svelte-ux';
+  import type { StatefulSetResponse } from '../api/network/+server';
   let nodes: { name: string; ip: string; ports: number[] }[] = [];
+  let cluster : StatefulSetResponse[] = [];
   let loading = true;
   let error: string | null = null;
   let namespace = 'besu';
@@ -17,6 +19,7 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       nodes = data.nodes || [];
+      cluster = data.cluster || [];
     } catch (e) {
       error = e instanceof Error ? e.message : 'Unknown error';
       nodes = [];
@@ -47,16 +50,22 @@
   <div style="color:red">Error: {error}</div>
 {:else}
   <ul>
-    {#each nodes as node}
+    {#each cluster as statefulSet}
       <li>
-        {#if node.name && node.name.toLowerCase().includes('validator')}
-          <div class="bg-white rounded shadow p-4 border border-gray-200 mt-4">
-            <h2 class="text-2xl font-bold mb-4">{node.name}</h2>
-            <div class="mt-2">
-              <a href={`/node/${node.ip}`} class="text-blue-600 hover:underline">Block Explorer</a> | 
-              <a href={`/backup/${node.name}`} class="text-blue-600 hover:underline">Backup Node</a> | 
-              <a href={`/scale/${node.name}`} class="text-blue-600 hover:underline">Scale</a>
-            </div>
+        {#if statefulSet.statefulSet}
+          <div class="bg-white rounded shadow p-4 border border-gray-200 mt-">
+            <h2 class="text-2xl font-bold mb-4">{statefulSet.statefulSet}</h2>
+
+            <a href={`/scale/${statefulSet.statefulSet}`} class="text-blue-600 hover:underline">Scale</a>
+            {#each statefulSet.services as service}
+              {#each service.pods as pod}
+                <span class="text-gray-500">(pod {pod})</span>
+              {/each}
+              <div class="mt-2">
+                <a href={`/node/${service.ip}`} class="text-blue-600 hover:underline">Block Explorer</a> | 
+                <a href={`/backup/${service.name}`} class="text-blue-600 hover:underline">Backup Node</a>
+              </div>
+            {/each}
           </div>
         {/if}
       </li>

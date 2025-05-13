@@ -1,5 +1,17 @@
+import { getNamespaceTopology, type K8SService, type StatefulSet } from '$lib/k9s';
 import { json } from '@sveltejs/kit';
 import { execSync } from 'child_process';
+
+export type ClusterService = {
+    name: string;
+    ip?: string;
+    ports: number[];
+    pods: string[];
+}
+export type StatefulSetResponse = {
+    statefulSet: string;
+    services: ClusterService[];
+};
 
 export async function GET({ url }: { url: URL }) {
     try {
@@ -12,7 +24,39 @@ export async function GET({ url }: { url: URL }) {
             ip: svc.spec.clusterIP,
             ports: svc.spec.ports.map((p: any) => p.port)
         }));
-        return json({ nodes });
+
+        const network = await getNamespaceTopology(namespace);
+
+        const ipByService = nodes.reduce((acc: any, node: any) => {
+            acc[node.name] = {
+                ip: node.ip,
+                ports: node.ports
+            };
+            return acc;
+        }, {});
+
+        const enriched = network.map((item: StatefulSet) => {
+            const services = item.services.map((service: K8SService) => {
+                const name = service.name
+                if (ipByService[name]) {
+                    const { ip, ports } = ipByService[name]
+
+                    return {
+                        ...service,
+                        ip, ports
+                    }
+                } else {
+                    return service
+                }
+            });
+
+            return {
+                statefulSet: item.statefulSet,
+                services
+            }
+        });
+
+        return json({ cluster: enriched });
     } catch (e) {
         return json({ nodes: [], error: String(e) }, { status: 500 });
     }
