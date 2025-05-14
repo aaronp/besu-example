@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: besu-ops
-          image: kindservices/besu-ops:0.0.17
+          image: kindservices/besu-ops:0.0.18
           ports:
             - containerPort: 3000
           env:
