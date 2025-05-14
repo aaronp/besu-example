@@ -34,10 +34,18 @@ export async function POST({ request }) {
     // Remove all contents of the dataDir
     try {
         if (fs.existsSync(dataDir)) {
-            fs.rmSync(dataDir, { recursive: true, force: true });
+            console.log('Clearing data directory', dataDir);
+            for (const entry of fs.readdirSync(dataDir)) {
+                const entryPath = path.join(dataDir, entry);
+                fs.rmSync(entryPath, { recursive: true, force: true });
+            }
+            console.log('Cleared data directory', dataDir);
+        } else {
+            console.error(`Data dir mysteriously doesn't exist: ${dataDir}`);
+            return json({ error: 'Failed to find data directory', details: `Data dir mysteriously doesn\'t exist: ${dataDir}` }, { status: 500 });
         }
-        fs.mkdirSync(dataDir, { recursive: true });
     } catch (e) {
+        console.error('Failed to clear data directory', e);
         return json({ error: 'Failed to clear data directory', details: e instanceof Error ? e.message : String(e) }, { status: 500 });
     }
 
