@@ -62,7 +62,8 @@
   onMount(loadStatus);
 </script>
 
-<div class="px-4 max-w-xl mx-auto">
+<div class="px-4 max-w-xl">
+  <a href="/" class="text-blue-600 hover:underline">Home</a> | <a href="/network" class="text-blue-600 hover:underline">Cluster</a>
   <h1 class="text-3xl font-bold mb-4">Scale Stateful Set: <span class="text-blue-700">{statefulset}</span></h1>
 
   {#if error}
@@ -75,8 +76,11 @@
   </div>
 
   <div class="flex gap-4">
-    <Button class="bg-green-600 text-white px-4 py-2 rounded font-semibold hover:bg-green-700 disabled:opacity-50" on:click={() => scale('up')} disabled={scaling || status === 'up' || status === 'starting'}>Scale Up</Button>
-    <Button class="bg-red-600 text-white px-4 py-2 rounded font-semibold hover:bg-red-700 disabled:opacity-50" on:click={() => scale('down')} disabled={scaling || status === 'down' || status === 'stopping'}>Scale Down</Button>
+    {#if status === 'Running'}
+      <Button class="bg-red-600 text-white px-4 py-2 rounded font-semibold hover:bg-red-700 disabled:opacity-50" on:click={() => scale('down')} disabled={scaling}>Scale Down</Button>
+    {:else}
+      <Button class="bg-green-600 text-white px-4 py-2 rounded font-semibold hover:bg-green-700 disabled:opacity-50" on:click={() => scale('up')} disabled={scaling}>Scale Up</Button>
+    {/if}
     <Button class="bg-gray-300 text-gray-800 px-4 py-2 rounded font-semibold hover:bg-gray-400" on:click={loadStatus} disabled={scaling}>Refresh</Button>
   </div>
 </div>

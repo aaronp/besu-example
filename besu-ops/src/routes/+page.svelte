@@ -21,17 +21,17 @@
 </style>
 
 <div class="card-container ">
+  <a class="card" href="/network">
+      <h2>Cluster</h2>
+      <p>The Besu Cluster</p>
+  </a>
+  <a class="card" href="/accounts">
+      <h2>Accounts</h2>
+      <p>User Accounts</p>
+  </a>
   <a class="card" href="/transfer">
     <h2>Transfer</h2>
-    <p>Go to the transfer page</p>
-    </a>
-    <a class="card" href="/accounts">
-        <h2>Accounts</h2>
-        <p>Go to the accounts page</p>
-    </a>
-    <a class="card" href="/network">
-        <h2>Network</h2>
-        <p>The K8S network</p>
+    <p>Transfer ETH</p>
     </a>
     
 </div>

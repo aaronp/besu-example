@@ -1,0 +1,12 @@
+---
+description: 
+globs: *.svelte,*.ts
+alwaysApply: false
+---
+Please use the latest svelte5 approach, documented here https://svelte.dev/docs/svelte/overview
+
+Use svelte-ux (https://svelte-ux.techniq.dev/) and tailwind for styling.
+
+Use svelte and typescript best practices. Keep things small, and use components where sensible to break up large pages.
+
+Implement the server-side actions under the 'api' routes, and declare typescript types for request bodies and responses which are shared between the caller (client) and the server.

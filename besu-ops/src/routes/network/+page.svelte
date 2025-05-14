@@ -56,16 +56,22 @@
           <div class="bg-white rounded shadow p-4 border border-gray-200 mt-">
             <h2 class="text-2xl font-bold mb-4">{statefulSet.statefulSet}</h2>
 
-            <a href={`/scale/${statefulSet.statefulSet}`} class="text-blue-600 hover:underline">Scale</a>
-            {#each statefulSet.services as service}
-              {#each service.pods as pod}
-                <span class="text-gray-500">(pod {pod})</span>
+            {#if statefulSet.services}
+
+              {#each statefulSet.services as service}
+                {#each service.pods as pod}
+                    <span class="text-gray-500">(pod {pod})</span>
+                {/each}
+                <div class="mt-2">
+                  <a href={`/transfer/${statefulSet.statefulSet}`} class="text-blue-600 hover:underline">Transfer</a> |
+                  <a href={`/scale/${statefulSet.statefulSet}`} class="text-blue-600 hover:underline">Scale</a> |
+                  <a href={`/node/${service.ip}`} class="text-blue-600 hover:underline">Block Explorer</a> | 
+                  <a href={`/backup/${service.name}`} class="text-blue-600 hover:underline">Backup Node</a>
+                </div>
               {/each}
-              <div class="mt-2">
-                <a href={`/node/${service.ip}`} class="text-blue-600 hover:underline">Block Explorer</a> | 
-                <a href={`/backup/${service.name}`} class="text-blue-600 hover:underline">Backup Node</a>
-              </div>
-            {/each}
+            {:else}
+            <a href={`/scale/${statefulSet.statefulSet}`} class="text-blue-600 hover:underline">Scale</a>
+            {/if}
           </div>
         {/if}
       </li>
