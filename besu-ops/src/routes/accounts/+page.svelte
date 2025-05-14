@@ -49,7 +49,8 @@ function deleteAccount(index: number) {
 }
 </script>
 
-<h1>Accounts Page</h1>
+<a href="/" class="text-blue-600 hover:underline">Home</a> 
+<h1 class="text-2xl font-bold mb-4">Accounts</h1>
 
 <button on:click={createAccount} class="bg-blue-600 text-white px-4 py-2 rounded mb-4">Create New Account</button>
 

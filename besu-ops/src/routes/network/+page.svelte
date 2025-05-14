@@ -30,10 +30,10 @@
 
   loadNodes();
 </script>
+<a href="/" class="text-blue-600 hover:underline">Home</a> 
+<h1 class="text-2xl font-bold mb-4">Besu Cluster</h1>
 
-<h1 class="text-2xl font-bold mb-4">Besu Network Nodes</h1>
-
-<div class="mb-4">
+<!-- <div class="mb-4">
   <TextField
     label="Namespace"
     placeholder="Please enter the kubenernetes namespace"
@@ -42,7 +42,7 @@
     
     on:change={loadNodes}
   />
-</div>
+</div> -->
 
 {#if loading}
   <div>Loading <span class="spinner" style="display:inline-block;width:1em;height:1em;border:2px solid #ccc;border-top:2px solid #333;border-radius:50%;animation:spin 1s linear infinite;"></span></div>

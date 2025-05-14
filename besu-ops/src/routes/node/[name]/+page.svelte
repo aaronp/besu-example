@@ -135,7 +135,7 @@
 
 <div class="px-4">
 <div>
-  <a href="/" class="text-blue-600 hover:underline">Home</a> | <a href="/network" class="text-blue-600 hover:underline">Back to Network</a>
+  <a href="/" class="text-blue-600 hover:underline">Home</a> | <a href="/network" class="text-blue-600 hover:underline">Cluster</a>
   <h1 class="text-4xl font-bold mb-4">{nodeName}</h1>
 
   {#if error}
