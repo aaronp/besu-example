@@ -2,7 +2,7 @@
 dev:
 	DATA_DIR=./d8a BACKUP_DIR=./backups npm run dev
 
-TAG ?= 0.0.16
+TAG ?= 0.0.17
 IMAGE ?= kindservices/besu-ops
 
 build:

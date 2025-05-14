@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: besu-ops
-          image: kindservices/besu-ops:0.0.15
+          image: kindservices/besu-ops:0.0.16
           ports:
             - containerPort: 3000
           env:
@@ -26,16 +26,16 @@ spec:
           volumeMounts:
             - name: validator1-data
               mountPath: /data/besu-validator1
-              readOnly: true
+              readOnly: false
             - name: validator2-data
               mountPath: /data/besu-validator2
-              readOnly: true
+              readOnly: false
             - name: validator3-data
               mountPath: /data/besu-validator3
-              readOnly: true
+              readOnly: false
             - name: validator4-data
               mountPath: /data/besu-validator4
-              readOnly: true
+              readOnly: false
             - name: backups
               mountPath: /backups
       volumes:
