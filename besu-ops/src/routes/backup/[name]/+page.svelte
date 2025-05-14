@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Button, TextField, Collapse } from 'svelte-ux';
   import { onMount } from 'svelte';
+  import type { RestoreRequest, RestoreResponse } from '$lib/types';
 
   export let data: { name: string };
   let memberHost: string = data.name;
@@ -69,6 +70,33 @@
     }
   }
 
+  let restoring: string | null = null;
+  let restoreMessage: string | null = null;
+
+  async function onRestore(backup: string) {
+    restoring = backup;
+    restoreMessage = null;
+    try {
+      const body: RestoreRequest = {
+        backup,
+        namespace,
+        nodeName
+      };
+      const res = await fetch('/api/restore', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data: RestoreResponse = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Unknown error');
+      restoreMessage = data.message || 'Restore successful';
+    } catch (e) {
+      restoreMessage = `Restore failed: ${e instanceof Error ? e.message : e}`;
+    } finally {
+      restoring = null;
+    }
+  }
+
 </script>
 
 <div class="px-4">
@@ -80,12 +108,25 @@
   {#if backups.length == 0}
   <p>No node backups found</p>
   {/if}
+
   {#if backups.length > 0}
     <div>
       <h2 class="text-2xl font-bold mb-4">{backups.length} Backup{backups.length > 1 ? "s" : ""}</h2>
+      {#if restoreMessage}
+        <div class="mb-2 text-green-600">{restoreMessage}</div>
+      {/if}
       <ul>
         {#each backups as backup}
-          <li>{backup}</li>
+          <li class="flex items-center gap-2 my-1">
+            <span>{backup}</span>
+            <Button
+              class="bg-yellow-600 text-white rounded px-2 py-1 text-xs font-semibold hover:bg-yellow-700 disabled:opacity-50"
+              on:click={() => onRestore(backup)}
+              disabled={restoring === backup}
+            >
+              {restoring === backup ? 'Restoring...' : 'Restore'}
+            </Button>
+          </li>
         {/each}
       </ul>
     </div>
