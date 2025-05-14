@@ -19,4 +19,9 @@ if grep -qE '^TAG \?= [0-9]+\.[0-9]+\.[0-9]+' "$MAKEFILE"; then
   NEXT_VER="$MAJOR.$MINOR.$NEXT_PATCH"
   sed -i '' "s/^TAG \?= $CUR_VER/TAG ?= $NEXT_VER/" "$MAKEFILE"
   echo "Bumped Makefile $TAG to $NEXT_VER"
-fi 
+fi
+
+# Update deployment.yaml image version
+DEPLOYMENT_YAML="$(dirname "$0")/../k8s/deployment.yaml"
+sed -i '' "s|image: kindservices/besu-ops:[^\"]*|image: kindservices/besu-ops:$TAG|" "$DEPLOYMENT_YAML"
+echo "Updated deployment.yaml image to $TAG" 
