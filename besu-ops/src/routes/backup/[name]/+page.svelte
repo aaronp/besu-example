@@ -146,17 +146,17 @@
               disabled={restoring === backup}
             >
             {restoring === backup ? 'Restoring...' : 'Restore'}
-            </Button> | 
-            <Button
-            class="bg-yellow-600 text-white rounded px-2 py-1 text-xs font-semibold hover:bg-yellow-700 disabled:opacity-50"
-            on:click={() => onDelete()}
-            disabled={restoring === backup}
-          >
-            {restoring === backup ? '...' : 'Clear'}
-          </Button>
+            </Button>
           </li>
         {/each}
       </ul>
+      
+      <Button
+      class="bg-yellow-600 text-white rounded px-2 py-1 text-xs font-semibold hover:bg-yellow-700 disabled:opacity-50"
+      on:click={() => onDelete()}
+    >
+      Clear Node Data
+    </Button>
     </div>
   {/if}
   <div>
