@@ -157,7 +157,7 @@
     <Button class="py-4 my-8 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"
      on:click={onBackup} disabled={backingUp} >Backup Node</Button> | 
      <Button
-     class="bg-yellow-600 text-white rounded px-2 py-1 text-xs font-semibold hover:bg-yellow-700 disabled:opacity-50"
+     class="bg-yellow-600 text-white rounded px-2 py-4 text-xs font-semibold hover:bg-yellow-700 disabled:opacity-50"
      on:click={() => onDelete()}
    >
      Clear Node Data
