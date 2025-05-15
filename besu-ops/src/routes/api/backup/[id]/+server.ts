@@ -7,6 +7,7 @@ import path from 'path';
 const DATA_DIR = process.env.DATA_DIR;
 const BACKUP_DIR = process.env.BACKUP_DIR;
 
+
 export async function POST({ params }) {
 
     console.log('starting back up', {
@@ -77,4 +78,4 @@ export async function GET({ params }) {
     const files = fs.readdirSync(backupsDir)
         .filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''));
     return json(files);
-} 
+}

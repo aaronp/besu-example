@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button, TextField, Collapse } from 'svelte-ux';
   import { onMount } from 'svelte';
-  import type { RestoreRequest, RestoreResponse } from '$lib/types';
+  import type { ClearRequest, ClearResponse, RestoreRequest, RestoreResponse } from '$lib/types';
 
   export let data: { name: string };
   let memberHost: string = data.name;
@@ -73,6 +73,26 @@
   let restoring: string | null = null;
   let restoreMessage: string | null = null;
 
+  async function onDelete() {
+    restoreMessage = null;
+    try {
+      const body: ClearRequest = {
+        namespace,
+        nodeName
+      };
+      const res = await fetch('/api/restore', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data: ClearResponse = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Unknown error');
+      restoreMessage = data.message || 'data cleared';
+    } catch (e) {
+      restoreMessage = `Clear failed: ${e instanceof Error ? e.message : e}`;
+    } finally {
+    }
+  }
   async function onRestore(backup: string) {
     restoring = backup;
     restoreMessage = null;
@@ -125,8 +145,15 @@
               on:click={() => onRestore(backup)}
               disabled={restoring === backup}
             >
-              {restoring === backup ? 'Restoring...' : 'Restore'}
-            </Button>
+            {restoring === backup ? 'Restoring...' : 'Restore'}
+            </Button> | 
+            <Button
+            class="bg-yellow-600 text-white rounded px-2 py-1 text-xs font-semibold hover:bg-yellow-700 disabled:opacity-50"
+            on:click={() => onDelete()}
+            disabled={restoring === backup}
+          >
+            {restoring === backup ? '...' : 'Clear'}
+          </Button>
           </li>
         {/each}
       </ul>
