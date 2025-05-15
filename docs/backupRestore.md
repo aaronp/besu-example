@@ -37,10 +37,8 @@ Navigate back to the cluster, and choose the block explorer from any node to see
 
 ![First Transaction](./firstTransaction.png)
 
-You can see that flow <a href="./InitialTxn.mp4">here:</a><br/>
-<video src="./InitialTxn.mp4" controls width="600">
-  initial transaction (video)
-</video>
+You can see that flow here:
+![Initial txn](./InitialTxn.gif)
 
 ## Backing up the Node(s)
 
@@ -64,11 +62,9 @@ We can now navigate back to the 'scale' option for the node and scale the node b
 
 ![scale up](./scaleUp.png)
 
-You can see that flow for all nodes in this <a href="./BackupNodes.mp4">clip:</a><br/>
+You can see that flow for all nodes in this here:
+![BackupNodes](./BackupNodes.gif)
 
-<video src="./BackupNodes.mp4" controls width="600">
-  scale up flow (video)
-</video>
 
 ## Restore
 
@@ -77,28 +73,22 @@ To demonstrate the restore, we should now make additional transactions in order 
 Note: If we only tried to restore one node, it would become eventually consistent and see these new transactions, so for the purpose of testing/this demonstration,
 we sping down all four nodes in the cluster.
 
-That flow is represented in this <a href="./SecondTransaction.mp4">clip:</a><br/>
-<video src="./SecondTransaction.mp4" controls width="600">
-  Second Transaction (video)
-</video>
+That flow is represented in this flow:
+![SecondTransaction](./SecondTransaction.gif)
 
 Now that we have an additional transaction, we can scale down our nodes as we did when we took our backup.
 
 We can then navigate to 'backup' for each node and choose the 'Restore' button next to the backup.
 
-We can then spin the cluster back up, as seen <a href="./Restore.mp4">here:</a><br/>
+We can then spin the cluster back up, as seen here:
+![Restore](./Restore.gif)
 
-<video src="./Restore.mp4" controls width="600">
-  Restore (video)
-</video>
 
 ## Verify
 
-Having made an additional transaction after our backup, we should now be able to use the block explorer for any node to observe that we just have our initial transaction, as seen <a href="./Test.mp4">here:</a>
+Having made an additional transaction after our backup, we should now be able to use the block explorer for any node to observe that we just have our initial transaction, as seen here:
 
-<video src="./Test.mp4" controls width="600">
-  testing (video)
-</video>
+![Test](./Test.gif)
 
 Notice that we can continue to use our cluster and make additional transactions, which will be different from the transaction we "lost" due to restoring from a previous backup.
 
