@@ -34,7 +34,7 @@ echo
 echo "  +------------------------------+"
 echo "  | argocd installed - run:      |"
 echo "  |                              |"
-echo "  |    ./installBesu.sh          |"
+echo "  |    ./ibf2/deploy.sh          |"
 echo "  |                              |"
 echo "  | to install Besu              |"
 echo "  +------------------------------+"

@@ -10,6 +10,9 @@ data:
     {
       "config": {
         "chainId": 1337,
+        "londonBlock": 0,
+        "parisBlock": 0,
+        "shanghaiTime": 0,
         "constantinoplefixblock": 0,
         "ibft2": {
           "blockperiodseconds": 2,
